@@ -1,0 +1,26 @@
+{
+  "name": "server-htms",
+  "version": "0.1.0",
+  "description": "A server version of htms",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fsh-org/Server-HTMS.git"
+  },
+  "keywords": [
+    "fsh",
+    "htms",
+    "express",
+    "mw",
+    "middleware"
+  ],
+  "author": "Inventionpro & Frostzzone",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fsh-org/Server-HTMS/issues"
+  },
+  "homepage": "https://github.com/fsh-org/Server-HTMS#readme"
+}
