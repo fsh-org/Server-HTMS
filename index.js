@@ -13,6 +13,10 @@ function getSample(con, name) {
 }
 
 function reshtms(res, file) {
+  if (!fs.existsSync(file)) {
+    throw new Error('File doesn\'t exist: '+file);
+    return;
+  }
   let con = fs.readFileSync(file,'utf8');
   if (con.match(/<htms.*?>[^¬]+?<\/htms>/m)[0]) {
     let htms = con.match(/<htms.*?>[^¬]+?<\/htms>/m)[0];
