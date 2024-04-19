@@ -36,7 +36,7 @@ function reshtms(res, file) {
           })
           break;
         case 'inject':
-          reg = new RegExp('<'+args[1].replaceAll('"','')+'.*?>[^¬]+?</'+args[1].replaceAll('"','')+'>', 'gm')
+          reg = new RegExp('<'+args[1].replaceAll('"','')+'.*?>[^¬]*?</'+args[1].replaceAll('"','')+'>', 'gm')
           con = con.replaceAll(reg, function(match){
             let ch = match.replace(/>[^¬]*?</m, '><').replace('>', '>'+files[args[3].replaceAll('"','')])
             if (match.includes(' var="')) {
@@ -49,7 +49,7 @@ function reshtms(res, file) {
           })
           break;
         case 'replace':
-          reg = new RegExp('<'+args[1].replaceAll('"','')+'.*?>[^¬]+?</'+args[1].replaceAll('"','')+'>', 'gm')
+          reg = new RegExp('<'+args[1].replaceAll('"','')+'.*?>[^¬]*?</'+args[1].replaceAll('"','')+'>', 'gm')
           con = con.replaceAll(reg, function(match){
             let ch = files[args[3].replaceAll('"','')];
             if (match.includes(' var="')) {
