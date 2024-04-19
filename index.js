@@ -18,8 +18,8 @@ function reshtms(res, file) {
     return;
   }
   let con = fs.readFileSync(file,'utf8');
-  if (con.match(/<htms.*?>[^¬]+?<\/htms>/m)[0]) {
-    let htms = con.match(/<htms.*?>[^¬]+?<\/htms>/m)[0];
+  if ((con.match(/<htms.*?>[^¬]*?<\/htms>/m)||[false])[0]) {
+    let htms = con.match(/<htms.*?>[^¬]*?<\/htms>/m)[0];
     htms = htms.split('\n');
     htms.slice(1,htms.length-1);
     htms = htms.map(e => e.trim());
