@@ -73,7 +73,9 @@ function reshtms(res, file) {
       }
     })
   }
-    
+
+  con += `<style>htms{display:none!important}</style>`;
+
   if (exp.dynamicVars) {
     con += `<script>
   let events = [];
@@ -85,17 +87,17 @@ function reshtms(res, file) {
         (['input', 'textarea', 'select'].includes(r.tagName.toLocaleLowerCase()) ? r.value = ch : r.innerHTML = ch);
       });
     }
-      
+
     let observer = new MutationObserver(function(){upd()})
     observer.observe(u, { attributes: true, childList: true, subtree: true });
     obs.push(observer);
-    
+
     u.addEventListener('input', upd)
     events.push([u, upd])
   })
 </script>`
   }
-    
+
   function waitAsync(targetValue) {
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
