@@ -38,7 +38,7 @@ function reshtms(res, file) {
         case 'inject':
           reg = new RegExp('<'+args[1].replaceAll('"','')+'.*?>[^¬]*?</'+args[1].replaceAll('"','')+'>', 'gm')
           con = con.replaceAll(reg, function(match){
-            let ch = match.replace(/>[^¬]*?</m, '><').replace('>', '>'+files[args[3].replaceAll('"','')])
+            let ch = match.replace(/>[^¬]*<\//m, '></').replace('>', '>'+files[args[3].replaceAll('"','')])
             if (match.includes(' var="')) {
               match.split(' var="')[1].split('"')[0].split(';').forEach(fd => {
                 fd = fd.split(':')
@@ -69,7 +69,7 @@ function reshtms(res, file) {
           con += '<script>'+mo+'</script>';
           break;
         case 'exp':
-          exp[args[1].replaceAll('"','')] = true
+          exp[args[1].replaceAll('"','')] = true;
       }
     })
   }
@@ -98,14 +98,14 @@ function reshtms(res, file) {
 </script>`
   }
 
-  function waitAsync(targetValue) {
+  function waitAsync() {
     return new Promise((resolve, reject) => {
-        const interval = setInterval(() => {
-            if (asyn === 0) {
-                clearInterval(interval);
-                resolve();
-            }
-        }, 100);
+      const interval = setInterval(() => {
+        if (asyn === 0) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 100);
     });
   }
   (async() => {
