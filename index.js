@@ -8,7 +8,7 @@ let exp = {
 let asyn = 0;
 
 function getSample(con, name) {
-  let reg = new RegExp('<sample.*? name="'+name+'".*?>[^¬]+?</sample>', 'm')
+  let reg = new RegExp(`<sample.*? name="${name}".*?>[^¬]+?</sample>`, 'm')
   return con.match(reg)[0].replace(/<sample.*?>|<\/sample>/gm, '')
 }
 
@@ -18,16 +18,18 @@ function reshtms(res, file) {
     return;
   }
   let con = fs.readFileSync(file,'utf8');
-  if ((con.match(/<htms.*?>[^¬]*?<\/htms>/m)||[false])[0]) {
+  if ((con.match(/<htms.*?>[^¬]*?<\/htms>/m)??[false])[0]) {
     let htms = con.match(/<htms.*?>[^¬]*?<\/htms>/m)[0];
     htms = htms.split('\n');
-    htms.slice(1,htms.length-1);
-    htms = htms.map(e => e.trim());
-    htms = htms.filter(e => e.length);
+    htms.slice(1,-1);
+    htms = htms
+      .map(e => e.trim())
+      .filter(e => e.length);
 
     htms.forEach(async line => {
       let args = line.split(' ');
       let reg;
+      let module;
       switch(args[0]) {
         case 'import':
           let ht = fs.readFileSync(args[3].replaceAll('"',''),'utf8');
@@ -36,9 +38,9 @@ function reshtms(res, file) {
           })
           break;
         case 'inject':
-          reg = new RegExp('<'+args[1].replaceAll('"','')+'.*?>[^¬]*?</'+args[1].replaceAll('"','')+'>', 'gm')
+          reg = new RegExp(`<${args[1].replaceAll('"','')}.*?>[^¬]*?</${args[1].replaceAll('"','')}>`, 'gm')
           con = con.replaceAll(reg, function(match){
-            let ch = match.replace(/>[^¬]*<\//m, '></').replace('>', '>'+files[args[3].replaceAll('"','')])
+            let ch = match.replace(/>[^¬]*?</m, '><').replace('>', '>'+files[args[3].replaceAll('"','')])
             if (match.includes(' var="')) {
               match.split(' var="')[1].split('"')[0].split(';').forEach(fd => {
                 fd = fd.split(':')
@@ -49,7 +51,7 @@ function reshtms(res, file) {
           })
           break;
         case 'replace':
-          reg = new RegExp('<'+args[1].replaceAll('"','')+'.*?>[^¬]*?</'+args[1].replaceAll('"','')+'>', 'gm')
+          reg = new RegExp(`<${args[1].replaceAll('"','')}.*?>[^¬]*?</${args[1].replaceAll('"','')}>`, 'gm')
           con = con.replaceAll(reg, function(match){
             let ch = files[args[3].replaceAll('"','')];
             if (match.includes(' var="')) {
@@ -63,18 +65,18 @@ function reshtms(res, file) {
           break;
         case 'module':
           asyn += 1
-          let mo = await fetch('https://htms.fsh.plus/module/'+args[1].replaceAll('"','')+'/module.js');
-          mo = await mo.text();
+          module = await fetch(`https://htms.fsh.plus/module/${args[1].replaceAll('"','')}/module.js`);
+          module = await module.text();
+          con += `<script>${module}</script>`;
           asyn -= 1;
-          con += '<script>'+mo+'</script>';
           break;
         case 'exp':
-          exp[args[1].replaceAll('"','')] = true;
+          exp[args[1].replaceAll('"','')] = true
       }
     })
   }
 
-  con += `<style>htms{display:none!important}</style>`;
+  con = con.replaceAll(/<htms.*?>[^¬]<\/htms>/g, '');
 
   if (exp.dynamicVars) {
     con += `<script>
@@ -98,7 +100,7 @@ function reshtms(res, file) {
 </script>`
   }
 
-  function waitAsync() {
+  function waitAsync(targetValue) {
     return new Promise((resolve, reject) => {
       const interval = setInterval(() => {
         if (asyn === 0) {
