@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "A server version of htms",
   "main": "index.js",
-  "types": "index.d.ts"
+  "types": "index.d.ts",
   "scripts": {},
   "repository": {
     "type": "git",
