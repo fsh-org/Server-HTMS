@@ -41,7 +41,7 @@ function reshtms(res, file) {
         case 'inject':
           reg = new RegExp(`<${args[1].replaceAll('"','')}.*?>[^¬]*?</${args[1].replaceAll('"','')}>`, 'gm')
           con = con.replaceAll(reg, function(match){
-            let ch = match.replace(/>[^¬]*<\//m, '><').replace('>', '>'+files[args[3].replaceAll('"','')])
+            let ch = match.replace(/>[^¬]*?</m, '><').replace('>', '>'+files[args[3].replaceAll('"','')])
             if (match.includes(' var="')) {
               match.split(' var="')[1].split('"')[0].split(';').forEach(fd => {
                 fd = fd.split(':')
