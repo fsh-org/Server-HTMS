@@ -20,6 +20,7 @@ function reshtms(res, file) {
   let con = fs.readFileSync(file,'utf8');
   if ((con.match(/<htms.*?>[^¬]*?<\/htms>/m)??[false])[0]) {
     let htms = con.match(/<htms.*?>[^¬]*?<\/htms>/m)[0];
+    con = con.replaceAll(/<htms.*?>[^¬]*?<\/htms>/gm, '');
     htms = htms.split('\n');
     htms.slice(1,-1);
     htms = htms
@@ -75,8 +76,6 @@ function reshtms(res, file) {
       }
     })
   }
-
-  con = con.replaceAll(/<htms.*?>[^¬]<\/htms>/g, '');
 
   if (exp.dynamicVars) {
     con += `<script>
